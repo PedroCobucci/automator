@@ -1,9 +1,0 @@
-digraph {
-	q0
-	q1 [color=green shape=doublecircle]
-	q0 -> q1 [label="Read: a, Write: b, Move: R"]
-	q0 -> q0 [label="Read: b, Write: b, Move: L"]
-	q1 -> q1 [label="Read: a, Write: a, Move: L"]
-	q1 -> q0 [label="Read: b, Write: b, Move: R"]
-	q0 [color=blue shape=ellipse]
-}

@@ -4,22 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Automata Manager</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqS2uYlW7cz8FXYY9YxOXbGb5f4b9EymFP7b3Lxh5d/Zy" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJf5PQ9E1Ccxmqlw3gF1lmhe9a3ZTz8hX9t16R0Ue6sYvdtPbJp+gaN6g3R7Q" crossorigin="anonymous">
 </head>
 <body>
 
-    <header>
+    <header class="bg-primary text-white text-center py-5">
         <h1>Bem-vindo ao Automata Manager</h1>
-        <p>Escolha o tipo de automato para começar:</p>
+        <p>Escolha o tipo de autômato para começar:</p>
     </header>
 
-    <main>
-        <div class="options">
-            <button class="button" onclick="window.location.href = window.location.href.replace(/\/[^\/]*$/, '/pda.html');"
-            >Deterministic Finite Automaton</button>
+    <main class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="list-group">
+                    <a href="pda.html" class="list-group-item list-group-item-action text-center">
+                        <h5 class="mb-1">PDA - Autômato de Pilha Determinístico</h5>
+                    </a>
+                    <a href="dfa.html" class="list-group-item list-group-item-action text-center">
+                        <h5 class="mb-1">DFA - Autômato Finito Determinístico</h5>
+                    </a>
+                    <a href="mt.html" class="list-group-item list-group-item-action text-center">
+                        <h5 class="mb-1">MT - Máquina de Turing</h5>
+                    </a>
+                </div>
+            </div>
         </div>
     </main>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-VHvP8Pp2WfJhyoP8Bhl1t97PpybVxK1GdX69j9Wpm6z3MvnQx35EXMpxfPBd6Op1" crossorigin="anonymous"></script>
 
 </body>
 </html>

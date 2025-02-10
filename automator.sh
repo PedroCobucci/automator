@@ -25,6 +25,8 @@ function display_intro() {
 
 function install_dependencies() {
     echo "Installing dependencies..."
+    sudo apt-get update
+    sudo apt-get install graphviz graphviz-dev -y
     pip install -r requirements.txt
     echo "Dependencies installed!"
     clear
@@ -32,6 +34,7 @@ function install_dependencies() {
 
 function start_app() {
     echo "Starting FastAPI application..."
+    open_browser
     cd ./api
     uvicorn main:app --reload --port 8000
 }
@@ -62,8 +65,7 @@ function display_menu() {
     echo "1) Start Application"
     echo "2) Install Dependencies"
     echo "3) Run Tests"
-    echo "4) Abrir o navegador com o index.html"
-    echo "5) Exit"
+    echo "4) Exit"
 }
 
 function main() {
@@ -83,9 +85,6 @@ function main() {
                 run_tests
                 ;;
             4)
-                open_browser
-                ;;
-            5)
                 echo "Goodbye!"
                 exit 0
                 ;;

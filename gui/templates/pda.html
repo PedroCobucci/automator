@@ -14,7 +14,7 @@
 
     <header class="bg-primary text-white text-center py-4">
         <h1 class="display-4">Criar e Testar Pushdown Automaton</h1>
-        <button onclick="window.location.href='/'" class="btn btn-danger">Voltar para o início</button>
+        <button <button onclick="window.location.href = window.location.href.replace(/\/[^\/]*$/, '/index.html');" class="btn btn-danger">Voltar para o início</button>
     </header>
 
     <main class="container mt-5">
@@ -121,15 +121,11 @@
                     console.log(data);
                     listContainer.empty();
 
-                    const path = window.location.href;
-                    const secondLastSlashIndex = path.lastIndexOf("/", path.lastIndexOf("/") - 1);
-                    const baseUrl = path.substring(0, secondLastSlashIndex);
-
                 
                     for (const automatonKey in data) {
                         if (data.hasOwnProperty(automatonKey)) {
                             const automaton = data[automatonKey];
-                            const imageUrl = `${baseUrl}/assets/${automaton.name}_pda_visualization.png`;
+                            const imageUrl = API_URL + "/pushdown_automaton/" + automaton.name + "/visualize";
                             console.log(imageUrl)
                             const row = $(`
                                 <div class="col-12">
@@ -227,6 +223,7 @@
                     $('#response').html('<div class="alert alert-danger">Erro: ' + xhr.responseText + '</div>');
                 }
             });
+            loadAutomata()
         });
 
         $('#test_pda').click(function() {
