@@ -1,5 +1,7 @@
 #!/bin/bash
 
+VENV_DIR="venv"  # Nome do diretório do ambiente virtual
+
 function display_intro() {
     RED='\033[0;31m'
     NC='\033[0m'
@@ -19,14 +21,25 @@ function display_intro() {
     echo "░   ▒    ░░░ ░ ░   ░      ░ ░ ░ ▒  ░      ░     ░   ▒    ░      ░ ░ ░ ▒    ░░   ░ "
     echo "    ░  ░   ░                  ░ ░         ░         ░  ░            ░ ░     ░     "
     echo ""
-    
+}
 
+function create_venv() {
+    if [ ! -d "$VENV_DIR" ]; then
+        echo "Creating virtual environment..."
+        python3 -m venv "$VENV_DIR"
+    fi
+}
+
+function activate_venv() {
+    echo "Activating virtual environment..."
+    source "$VENV_DIR/bin/activate"
 }
 
 function install_dependencies() {
     echo "Installing dependencies..."
-    sudo apt-get update
-    sudo apt-get install graphviz graphviz-dev -y
+    create_venv
+    activate_venv
+    pip install --upgrade pip
     pip install -r requirements.txt
     echo "Dependencies installed!"
     clear
@@ -34,6 +47,7 @@ function install_dependencies() {
 
 function start_app() {
     echo "Starting FastAPI application..."
+    activate_venv
     open_browser
     cd ./api
     uvicorn main:app --reload --port 8000
@@ -41,6 +55,7 @@ function start_app() {
 
 function run_tests() {
     echo "Running tests..."
+    activate_venv
     pytest tests/integration
 }
 
@@ -69,10 +84,9 @@ function display_menu() {
 }
 
 function main() {
-
     while true; do
         display_menu
-        read -p "Enter your choice (1-5): " choice
+        read -p "Enter your choice (1-4): " choice
 
         case $choice in
             1)
@@ -94,4 +108,5 @@ function main() {
         esac
     done
 }
+
 main
