@@ -3,6 +3,7 @@ uvicorn
 automata-lib
 automata-lib[visual]
 coloraide
+graphviz
 pygraphviz
 fastapi[standard]
 pytest

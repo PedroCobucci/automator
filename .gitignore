@@ -1,8 +1,5 @@
 # Ignore virtual environments
 venv/
-VENV/
-ENV/
-env/
 
 # Ignore Python cache files
 __pycache__/
@@ -12,3 +9,5 @@ __pycache__/
 
 # Ignore PNG files
 *.png
+
+*_cache

@@ -39,6 +39,8 @@ function install_dependencies() {
     echo "Installing dependencies..."
     create_venv
     activate_venv
+    sudo apt-get update
+    sudo apt-get install graphviz graphviz-dev -y
     pip install --upgrade pip
     pip install -r requirements.txt
     echo "Dependencies installed!"
