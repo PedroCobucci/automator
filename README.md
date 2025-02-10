@@ -51,7 +51,6 @@ O sistema é capaz de:
 
 
 ## Limitações e Pressupostos
- - Embora o projeto teoricamente possa rodar em Windows e Mac, não foi testado para essas plataformas.
  - Os dados são armazenados em memória.
 
 ## Exemplos de Uso da API
