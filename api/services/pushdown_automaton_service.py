@@ -15,6 +15,7 @@ def create_pushdown_automaton(data):
     pa.save_diagram()
 
     return {
+        "automaton": pa,
         "states": pa.__dict__["automaton"].states,
         "input_symbols": pa.__dict__["automaton"].input_symbols,
         "stack_symbols": pa.__dict__["automaton"].stack_symbols,
@@ -23,4 +24,5 @@ def create_pushdown_automaton(data):
         "initial_stack_symbol": pa.__dict__["automaton"].initial_stack_symbol,
         "final_states": pa.__dict__["automaton"].final_states,
         "acceptance_mode": pa.__dict__["automaton"].acceptance_mode,
+        "name": pa.__dict__["name"]
     }

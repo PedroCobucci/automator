@@ -1,4 +1,7 @@
 from automata.pda.dpda import DPDA
+import sys
+import os
+
 
 class PushdownAutomaton:
     def __init__(self, states, input_symbols, stack_symbols, transitions, initial_state, initial_stack_symbol, final_states, name):
@@ -18,4 +21,5 @@ class PushdownAutomaton:
         return self.automaton.accepts_input(input_string)
     
     def save_diagram(self):
-        self.automaton.show_diagram(path=f"../gui/assets/{self.name}_visualization.png")
+        diagram_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../../gui/assets/{self.name}_visualization.png'))
+        self.automaton.show_diagram(path=diagram_path)

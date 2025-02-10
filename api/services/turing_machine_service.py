@@ -13,6 +13,7 @@ def create_turing_machine(data):
     )
 
     return {
+        "automaton": tm,
         "states": tm.__dict__["automaton"].states,
         "input_symbols": tm.__dict__["automaton"].input_symbols,
         "tape_symbols": tm.__dict__["automaton"].tape_symbols,

@@ -8,7 +8,7 @@ from main import app
 client = TestClient(app)
 
 pushdown_automaton_data = {
-    "name": "pda1",
+    "name": "pushdown_automaton_1",
     "states": ['q0', 'q1', 'q2', 'q3'],
     "input_symbols": ['a', 'b'], 
     "stack_symbols": ['0', '1'], 
@@ -31,22 +31,72 @@ pushdown_automaton_data = {
     "acceptance_mode": 'final_state'
 }
 
-def test_create_pda():
+def test_create_pushdown_automaton():
     response = client.post("/pushdown_automaton/", json=pushdown_automaton_data)
+
     assert response.status_code == 200
     assert response.json() == {"message": "Pushdown Automaton created successfully!"}
 
-def test_test_pda_accepted():
-    response = client.get("/pushdown_automaton/pda1/test?input_string=ab")
+def test_test_pushdown_automaton_accepted():
+    client.post("/pushdown_automaton/", json=pushdown_automaton_data)
+
+    response = client.get("/pushdown_automaton/pushdown_automaton_1/test?input_string=ab")
+
     assert response.status_code == 200
     assert response.json() == {"accepted": True}
 
-def test_test_pda_rejected():
-    response = client.get("/pushdown_automaton/pda1/test?input_string=a")
+def test_test_pushdown_automaton_rejected():
+    client.post("/pushdown_automaton/", json=pushdown_automaton_data)
+
+    response = client.get("/pushdown_automaton/pushdown_automaton_1/test?input_string=a")
+
     assert response.status_code == 200
     assert response.json() == {"accepted": False}
 
-def test_test_pda_not_found():
-    response = client.get("/pushdown_automaton/non_existent_pda/test?input_string=0101")
+def test_test_pushdown_automaton_not_found():
+    response = client.get("/pushdown_automaton/non_existent_pushdown_automaton/test?input_string=0101")
+
     assert response.status_code == 404
     assert response.json()['detail'] == {"error": "Automaton not found"}
+
+
+def test_index_pushdown_automaton():
+    client.post("/pushdown_automaton/", json=pushdown_automaton_data)
+
+    response = client.get("/pushdown_automaton")
+
+    assert response.status_code == 200
+    assert response.json()["pushdown_automaton_1"]["name"] == "pushdown_automaton_1"
+
+def test_visualize_pushdown_automaton():
+    client.post("/pushdown_automaton", json=pushdown_automaton_data)
+
+    file_path = f"./gui/assets/pushdown_automaton_1_visualization.png"
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    with open(file_path, 'wb') as f:
+        f.write(b"fake image data")
+
+    response = client.get("/pushdown_automaton/pushdown_automaton_1/visualize")
+    assert response.status_code == 200
+    assert response.headers['Content-Type'] == "image/png+xml"
+
+    os.remove(file_path)
+
+def test_visualize_pushdown_automaton_not_found():
+
+    file_path = f"./gui/assets/pushdown_automaton_1_visualization.png"
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    response = client.get("/pushdown_automaton/pushdown_automaton_1/visualize")
+    assert response.status_code == 404
+    assert response.json()['detail'] == {"error": "Visualization not found"}
+
+
+def test_show_pushdown_automaton():
+    client.post("/pushdown_automaton", json=pushdown_automaton_data)
+
+    response = client.get("/pushdown_automaton/pushdown_automaton_1")
+
+    assert response.status_code == 200
+    print(response.json())
+    assert response.json()["name"] == "pushdown_automaton_1"

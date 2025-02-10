@@ -6,16 +6,19 @@ import os
 router = APIRouter()
 
 automata_store = {}
+automata_data = {}
 
 def get_automaton(name: str):
     if name not in automata_store:
         raise HTTPException(status_code=404, detail={"error": "Automaton not found"})
-    return automata_store[name]
+    return automata_store[name]["automaton"]
 
 @router.post("/pushdown_automaton/")
 def create_pda(data: dict):
     automaton = create_pushdown_automaton(data)
-    automata_store[data["name"]] = automaton
+    automata_store[data["name"]] = automaton.copy()
+    automaton.pop("automaton", None)
+    automata_data[data["name"]] = automaton
     return {"message": "Pushdown Automaton created successfully!"}
 
 @router.get("/pushdown_automaton/{name}/test")
@@ -25,16 +28,19 @@ def test_pda(name: str, input_string: str):
 
 @router.get("/pushdown_automaton")
 def index_pda():
-    print(automata_store)
-    return automata_store
+    return automata_data
 
 @router.get("/pushdown_automaton/{name}/visualize")
 def visualize_pda(name: str):
     pda = get_automaton(name)
     
-    file_path = f"./gui/assets/{name}_visualization.svg"
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../../gui/assets/{name}_visualization.png'))
     
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail={"error": "Visualization not found"})
     
-    return FileResponse(file_path, media_type="image/svg+xml")
+    return FileResponse(file_path, media_type="image/png+xml")
+
+@router.get("/pushdown_automaton/{name}")
+def show_pda(name: str):
+    return automata_data[f"{name}"]

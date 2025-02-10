@@ -1,4 +1,7 @@
 from automata.fa.dfa import DFA
+import sys
+import os
+
 
 class DeterministicFiniteAutomaton:
     def __init__(self, states, input_symbols, transitions, initial_state, final_states, name):
@@ -15,5 +18,6 @@ class DeterministicFiniteAutomaton:
         return self.automaton.accepts_input(input_string)
         
     def save_diagram(self):
-        self.automaton.show_diagram(path=f"./gui/assets/{self.name}_visualization.png")
+        diagram_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../../gui/assets/{self.name}_visualization.png'))
+        self.automaton.show_diagram(path=diagram_path)
     

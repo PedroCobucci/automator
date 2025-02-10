@@ -1,0 +1,14 @@
+# Ignore virtual environments
+venv/
+VENV/
+ENV/
+env/
+
+# Ignore Python cache files
+__pycache__/
+
+# Ignore VSCode settings
+.vscode/
+
+# Ignore PNG files
+*.png
