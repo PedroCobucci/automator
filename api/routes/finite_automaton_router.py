@@ -43,4 +43,6 @@ def visualize_finite_automaton(name: str):
 
 @router.get("/finite_automaton/{name}")
 def show_dfa(name: str):
+    if name not in automata_data:
+        raise HTTPException(status_code=404, detail={"error": "Automaton not found"})
     return automata_data[f"{name}"]

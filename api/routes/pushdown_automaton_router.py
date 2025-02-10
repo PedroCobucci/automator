@@ -43,4 +43,6 @@ def visualize_pda(name: str):
 
 @router.get("/pushdown_automaton/{name}")
 def show_pda(name: str):
+    if name not in automata_data:
+        raise HTTPException(status_code=404, detail={"error": "Automaton not found"})
     return automata_data[f"{name}"]

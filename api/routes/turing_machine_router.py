@@ -33,6 +33,8 @@ def index_turing_machine():
 
 @router.get("/turing_machine/{name}")
 def show_turing_machine(name: str):
+    if name not in automata_data:
+        raise HTTPException(status_code=404, detail={"error": "Automaton not found"})
     return automata_data[f"{name}"]
 
 @router.get("/turing_machine/{name}/visualize")
