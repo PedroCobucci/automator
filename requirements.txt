@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+automata-lib
+automata-lib[visual]
+coloraide
+pygraphviz
+fastapi[standard]
+pytest
