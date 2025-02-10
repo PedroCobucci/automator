@@ -74,3 +74,28 @@ def test_show_turing_machine():
     assert response.status_code == 200
     print(response.json())
     assert response.json()["name"] == "turing_machine_01"
+
+def test_visualize_turing_machine():
+    client.post("/turing_machine/", json=mt_data)
+
+    file_path = f"./gui/assets/turing_machine_01_tm_visualization.png"
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+    with open(file_path, 'wb') as f:
+        f.write(b"fake image data")
+
+    response = client.get("/turing_machine/turing_machine_01/visualize")
+    assert response.status_code == 200
+    assert response.headers['Content-Type'] == "image/png+xml"
+
+    os.remove(file_path)
+
+def test_visualize_turing_machine_not_found():
+    client.post("/turing_machine", json=mt_data)
+    file_path = f"./gui/assets/turing_machine_01_tm_visualization.png"
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    response = client.get("/turing_machine/turing_machine_01/visualize")
+    
+    assert response.status_code == 404
+    assert response.json()['detail'] == {"error": "Visualization not found"}

@@ -18,6 +18,6 @@ class DeterministicFiniteAutomaton:
         return self.automaton.accepts_input(input_string)
         
     def save_diagram(self):
-        diagram_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../../gui/assets/{self.name}_visualization.png'))
+        diagram_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../../gui/assets/{self.name}_dfa_visualization.png'))
         self.automaton.show_diagram(path=diagram_path)
     

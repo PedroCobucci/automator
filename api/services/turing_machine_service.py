@@ -12,6 +12,8 @@ def create_turing_machine(data):
         name=data["name"]
     )
 
+    tm.save_diagram()
+
     return {
         "automaton": tm,
         "states": tm.__dict__["automaton"].states,

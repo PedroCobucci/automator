@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pushdown Automaton</title>
+    <title>Finite Automaton</title>
 
     <!-- Adicionando o Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -13,7 +13,7 @@
 <body>
 
     <header class="bg-primary text-white text-center py-4">
-        <h1 class="display-4">Criar e Testar Pushdown Automaton</h1>
+        <h1 class="display-4">Criar e Testar Automato Finito</h1>
         <button onclick="window.location.href='/'" class="btn btn-danger">Voltar para o início</button>
     </header>
 
@@ -39,11 +39,11 @@
                     </div>
                 </div>
 
-                <!-- Campos editáveis do JSON para o PDA -->
+                <!-- Campos editáveis do JSON para o DFA -->
                 <div class="mb-3 row">
                     <label for="states" class="col-sm-3 col-form-label">Estados:</label>
                     <div class="col-sm-9">
-                        <input type="text" id="states" class="form-control" placeholder="Exemplo: ['q0', 'q1', 'q2']">
+                        <input type="text" id="states" class="form-control" placeholder="Exemplo: ['q0', 'q1']">
                     </div>
                 </div>
 
@@ -55,13 +55,6 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="stack_symbols" class="col-sm-3 col-form-label">Símbolos da Pilha:</label>
-                    <div class="col-sm-9">
-                        <input type="text" id="stack_symbols" class="form-control" placeholder="Exemplo: ['0', '1']">
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
                     <label for="initial_state" class="col-sm-3 col-form-label">Estado Inicial:</label>
                     <div class="col-sm-9">
                         <input type="text" id="initial_state" class="form-control" placeholder="Exemplo: 'q0'">
@@ -69,23 +62,9 @@
                 </div>
 
                 <div class="mb-3 row">
-                    <label for="initial_stack_symbol" class="col-sm-3 col-form-label">Símbolo Inicial da Pilha:</label>
-                    <div class="col-sm-9">
-                        <input type="text" id="initial_stack_symbol" class="form-control" placeholder="Exemplo: '0'">
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
                     <label for="final_states" class="col-sm-3 col-form-label">Estados Finais:</label>
                     <div class="col-sm-9">
-                        <input type="text" id="final_states" class="form-control" placeholder="Exemplo: ['q3']">
-                    </div>
-                </div>
-
-                <div class="mb-3 row">
-                    <label for="acceptance_mode" class="col-sm-3 col-form-label">Modo de Aceitação:</label>
-                    <div class="col-sm-9">
-                        <input type="text" id="acceptance_mode" class="form-control" placeholder="Exemplo: 'final_state'">
+                        <input type="text" id="final_states" class="form-control" placeholder="Exemplo: ['q1']">
                     </div>
                 </div>
 
@@ -93,12 +72,12 @@
                 <div class="mb-3 row">
                     <label for="transitions" class="col-sm-3 col-form-label">Transições do Automato:</label>
                     <div class="col-sm-9">
-                        <textarea id="transitions" class="form-control" rows="6" placeholder='Exemplo: {"q0": {"a": {"0": ["q1", ["1", "0"]]}}}'></textarea>
+                        <textarea id="transitions" class="form-control" rows="6" placeholder='Exemplo: {"q0": {"a": "q1", "b": "q0"}, "q1": {"a": "q1", "b": "q0"}}'></textarea>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <button id="create_pda" class="btn btn-success w-100">Criar Automato</button>
+                    <button id="create_dfa" class="btn btn-success w-100">Criar Automato</button>
                 </div> 
             </div>
         </div>
@@ -106,31 +85,29 @@
 
 
     <script>
-        
+        const API_URL = "http://127.0.0.1:8000";
+
         $(document).ready(function() {
             loadAutomata();
         });
 
         function loadAutomata() {
             $.ajax({
-                url: API_URL + "/pushdown_automaton",
+                url: API_URL + "/finite_automaton",
                 type: "GET",
                 dataType: "json",
                 success: function(data) {
                     const listContainer = $("#automaton-list");
-                    console.log(data);
                     listContainer.empty();
 
                     const path = window.location.href;
                     const secondLastSlashIndex = path.lastIndexOf("/", path.lastIndexOf("/") - 1);
                     const baseUrl = path.substring(0, secondLastSlashIndex);
 
-                
                     for (const automatonKey in data) {
                         if (data.hasOwnProperty(automatonKey)) {
                             const automaton = data[automatonKey];
-                            const imageUrl = `${baseUrl}/assets/${automaton.name}_pda_visualization.png`;
-                            console.log(imageUrl)
+                            const imageUrl = `${baseUrl}/assets/${automaton.name}_dfa_visualization.png`;
                             const row = $(`
                                 <div class="col-12">
                                     <div class="row align-items-center">
@@ -138,7 +115,7 @@
                                             <strong>${automaton.name}</strong>
                                         </div>
                                         <div class="col-md-6">
-                                            <img src="${imageUrl}" alt="Imagem do autômato" style="width: 350px;">
+                                            <img src="${imageUrl}" alt="Imagem do automato" style="width: 350px;">
                                         </div>
                                         <div class="col-md-3">
                                             <input type="text" class="form-control input-string" placeholder="Digite uma string">
@@ -155,13 +132,13 @@
                             listContainer.append(row);
                         }
                     }
-},
+                },
                 error: function(xhr, status, error) {
                     console.error("Erro ao carregar autômatos:", status, error);
                 }
             });
         }
-    
+
         $(document).on("click", ".test-btn", function() {
             const row = $(this).closest(".row");
             const automatonName = $(this).data("name");
@@ -169,7 +146,7 @@
             const statusIcon = row.find(".status-icon");
 
             $.ajax({
-                url: `${API_URL}/pushdown_automaton/${automatonName}/test`,
+                url: `${API_URL}/finite_automaton/${automatonName}/test`,
                 type: "GET",
                 data: { input_string: inputString },
                 success: function(response) {
@@ -185,64 +162,31 @@
             });
         });
 
-        </script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        const API_URL = "http://127.0.0.1:8000";
-
-        $('#create_pda').click(function() {
+        $('#create_dfa').click(function() {
             loadAutomata()
             const name = $('#name').val();
             const states = JSON.parse($('#states').val() || '[]');
             const input_symbols = JSON.parse($('#input_symbols').val() || '[]');
-            const stack_symbols = JSON.parse($('#stack_symbols').val() || '[]');
-            const initial_state = JSON.parse($('#initial_state').val() || '[]');
-            const initial_stack_symbol = JSON.parse($('#initial_stack_symbol').val());
-            const final_states = JSON.parse($('#final_states').val() || '[]');
-            const acceptance_mode = JSON.parse($('#acceptance_mode').val());
             const transitions = JSON.parse($('#transitions').val() || '{}');
+            const initial_state = JSON.parse($('#initial_state').val());
+            const final_states = JSON.parse($('#final_states').val() || '[]');
             
             const data = {
                 "name": name,
                 "states": states,
                 "input_symbols": input_symbols,
-                "stack_symbols": stack_symbols,
                 "transitions": transitions,
                 "initial_state": initial_state,
-                "initial_stack_symbol": initial_stack_symbol,
-                "final_states": final_states,
-                "acceptance_mode": acceptance_mode
+                "final_states": final_states
             };
+
             $.ajax({
-                url: API_URL + "/pushdown_automaton/",
+                url: API_URL + "/finite_automaton/",
                 type: "POST",
-                method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(data),
                 success: function(response) {
-                    $('#response').html('<div class="alert alert-success">Sucesso! Pushdown Automaton criado com sucesso!</div>');
-                },
-                error: function(xhr, status, error) {
-                    $('#response').html('<div class="alert alert-danger">Erro: ' + xhr.responseText + '</div>');
-                }
-            });
-        });
-
-        $('#test_pda').click(function() {
-            const name = $('#test_name').val();
-            const input_string = $('#input_string').val();
-
-            $.ajax({
-                url: API_URL + `/pushdown_automaton/${name}/test`,
-                type: 'GET',
-                data: { input_string: input_string },
-                success: function(response) {
-                    if (response.accepted) {
-                        $('#response').html('<div class="alert alert-success">Resultado: A entrada foi aceita!</div>');
-                    } else {
-                        $('#response').html('<div class="alert alert-danger">Resultado: A entrada foi rejeitada!</div>');
-                    }
+                    $('#response').html('<div class="alert alert-success">Sucesso! Automato Finito criado com sucesso!</div>');
                 },
                 error: function(xhr, status, error) {
                     $('#response').html('<div class="alert alert-danger">Erro: ' + xhr.responseText + '</div>');

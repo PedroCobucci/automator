@@ -71,7 +71,7 @@ def test_index_pushdown_automaton():
 def test_visualize_pushdown_automaton():
     client.post("/pushdown_automaton", json=pushdown_automaton_data)
 
-    file_path = f"./gui/assets/pushdown_automaton_1_visualization.png"
+    file_path = f"./gui/assets/pushdown_automaton_1_pda_visualization.png"
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, 'wb') as f:
         f.write(b"fake image data")
@@ -84,7 +84,7 @@ def test_visualize_pushdown_automaton():
 
 def test_visualize_pushdown_automaton_not_found():
 
-    file_path = f"./gui/assets/pushdown_automaton_1_visualization.png"
+    file_path = f"./gui/assets/pushdown_automaton_1_pda_visualization.png"
     if os.path.exists(file_path):
         os.remove(file_path)
     response = client.get("/pushdown_automaton/pushdown_automaton_1/visualize")

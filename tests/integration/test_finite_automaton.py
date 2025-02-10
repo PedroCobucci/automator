@@ -59,7 +59,7 @@ def test_index_finite_automaton():
 def test_visualize_finite_automaton():
     client.post("/finite_automaton/", json=create_finite_automaton_data)
 
-    file_path = f"./gui/assets/finite_automaton_1_visualization.png"
+    file_path = f"./gui/assets/finite_automaton_1_dfa_visualization.png"
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, 'wb') as f:
         f.write(b"fake image data")
@@ -71,7 +71,7 @@ def test_visualize_finite_automaton():
     os.remove(file_path)
 
 def test_visualize_finite_automaton_not_found():
-    file_path = f"./gui/assets/finite_automaton_1_visualization.png"
+    file_path = f"./gui/assets/finite_automaton_1_dfa_visualization.png"
     if os.path.exists(file_path):
         os.remove(file_path)
     response = client.get("/finite_automaton/finite_automaton_1/visualize")

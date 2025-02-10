@@ -34,7 +34,7 @@ def index_pda():
 def visualize_pda(name: str):
     pda = get_automaton(name)
     
-    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../../gui/assets/{name}_visualization.png'))
+    file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f'../../gui/assets/{name}_pda_visualization.png'))
     
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail={"error": "Visualization not found"})
